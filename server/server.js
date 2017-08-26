@@ -1,16 +1,16 @@
-// require('./config/config');
+require('./config/config');
 
 const express = require('express');
 const bodyParser = require('body-parser');
 const {ObjectID} = require('mongodb');
 const _ = require('lodash');
 
-var {mongoose} = require('./db/mongoose');
+var {mongoose} = require('./../server/db/mongoose.js');
 var {Todo} = require('./models/todo');
 var {User} = require('./models/user');
 
 var app = express();
-var port = process.env.PORT || 3000;
+var port = process.env.PORT;
 
 app.use(bodyParser.json());
 
@@ -26,7 +26,6 @@ app.post('/todos', (req, res) => {
   });
 });
 
-
 app.get('/todos', (req, res) => {
   Todo.find().then((todos) => {
     res.send({todos});
@@ -34,7 +33,6 @@ app.get('/todos', (req, res) => {
     res.status(400).send(e);
   });
 })
-
 
 app.get('/todos/:id', (req, res) => {
   var id = req.params.id;
@@ -52,7 +50,6 @@ app.get('/todos/:id', (req, res) => {
 
 });
 
-
 app.delete('/todos/:id', (req, res) => {
   var id = req.params.id;
 
@@ -68,7 +65,6 @@ app.delete('/todos/:id', (req, res) => {
     res.status(400).send()
   });
 });
-
 
 app.patch('/todos/:id', (req, res) => {
   var id = req.params.id;
@@ -95,8 +91,7 @@ app.patch('/todos/:id', (req, res) => {
   });
 });
 
-
-app.listen(3000, () => {
+app.listen(process.env.PORT, () => {
   console.log(`Started on port ${port}`);
 });
 
